@@ -68,7 +68,18 @@
             justify-content: center; 
         }
         
-        .top-hero-banner img { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.6; animation: zoom 20s infinite alternate; }
+       /* HERO SECTION */
+        .top-hero-banner { 
+            width: 100%; 
+            height: 100vh; /* Isse banner poori screen cover kar lega */
+            /* Agar aur bada chahiye toh 120vh kar do */
+            background: var(--charcoal); 
+            position: relative; 
+            overflow: hidden; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
         @keyframes zoom { from { transform: scale(1); } to { transform: scale(1.1); } }
         
         .banner-text { position: relative; z-index: 10; text-align: center; color: var(--gold); padding: 0 20px; }
@@ -312,4 +323,5 @@
     </script>
 </body>
 </html>
+
 
