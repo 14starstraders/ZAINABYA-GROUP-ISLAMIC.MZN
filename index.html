@@ -154,7 +154,7 @@
                 <button class="tab-btn active" onclick="app.filter('All')">All Items</button>
                 <button class="tab-btn" onclick="app.filter('Essentials')">Essentials</button>
                 <button class="tab-btn" onclick="app.filter('Tasbeeh')">Tasbeeh</button>
-                <button class="tab-btn" onclick="app.filter('Perfumes')">Itr/Perfumes</button>
+                <button class="tab-btn" onclick="app.filter('Perfumes')">BOOKS</button>
                 <button class="tab-btn" onclick="app.filter('Decor')">Decor</button>
             </div>
 
@@ -203,14 +203,13 @@
     <script>
         const app = {
             products: [
-                { id: 1, name: "SAJDAGAH (Khaq-e-Shifa)", price: 50, img: "SAJDAGAH.jpg", category: "Essentials", desc: "Pure soil from the holy land of Karbala. Authentic and sacred." },
-                { id: 2, name: "Crystal Tasbeeh (100)", price: 150, img: "TAZBEEH.jpg", category: "Tasbeeh", desc: "100 high-quality crystal beads for comfortable daily dhikr." },
-                { id: 3, name: "Premium Janamaz", price: 850, img: "https://via.placeholder.com/250?text=Janamaz", category: "Essentials", desc: "Soft velvet prayer mat with traditional Islamic patterns." },
-                { id: 4, name: "Black Musk (Kasturi)", price: 350, img: "https://via.placeholder.com/250?text=Musk", category: "Perfumes", desc: "Long-lasting traditional non-alcoholic Itr." },
-                { id: 5, name: "Ayatul Kursi Frame", price: 1200, img: "https://via.placeholder.com/250?text=Frame", category: "Decor", desc: "Beautiful wall decor with golden Arabic calligraphy." },
-                { id: 6, name: "Silver Aqeeq Ring", price: 2500, img: "https://via.placeholder.com/250?text=Ring", category: "Essentials", desc: "Pure silver ring with authentic Yemeni Aqeeq stone." },
-                { id: 7, name: "Pocket Quran", price: 200, img: "https://via.placeholder.com/250?text=Quran", category: "Essentials", desc: "Compact size Holy Quran for traveling." },
-                { id: 8, name: "Rose Water (Premium)", price: 120, img: "https://via.placeholder.com/250?text=RoseWater", category: "Perfumes", desc: "Pure rose water for spiritual and skin use." }
+                { id: 1, name: "SAJDAGAH (KHAQ-E-SHIFA)", price: 80, img: "SAJDAGAH.jpg", category: "Essentials", desc: "Pure soil from the holy land of Karbala. Authentic and sacred." },
+                { id: 2, name: "TASBEEH", price: 150, img: "TAZBEEH.jpg", category: "Tasbeeh", desc: "100 high-quality crystal beads for comfortable daily dhikr." },
+                { id: 3, name: "ISLAMIC CLOCK", price: 650, img: "https://via.placeholder.com/250?text=Janamaz", category: "DECOR", desc: "Islamic Wall Clock with Design of the Twelve Imams." },
+                { id: 4, name: "AYATAL KURSI", price: 1200, img: "https://via.placeholder.com/250?text=Frame", category: "BOOKS", desc: "Ayat al kursi - Divine Throne Verse ." },
+                { id: 5, name: "GEMS ( NAG )", price: 2500, img: "https://via.placeholder.com/250?text=Ring", category: "Essentials", desc: "Pure silver ring with authentic Yemeni Aqeeq stone." },
+                { id: 6, name: "QURAN", price: 200, img: "https://via.placeholder.com/250?text=Quran", category: "BOOKS", desc: "Compact size Holy Quran for reading." }
+               
             ],
             cart: [],
             init() { this.renderCatalog(this.products); },
@@ -323,6 +322,7 @@
     </script>
 </body>
 </html>
+
 
 
 
