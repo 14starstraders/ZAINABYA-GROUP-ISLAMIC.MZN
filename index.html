@@ -16,58 +16,45 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; transition: 0.3s; }
         body { background-color: var(--cream); color: #333; overflow-x: hidden; }
 
-        /* 1. TOP RED BOGO STRIP */
         .bogo-banner { background: var(--offer-red); color: white; text-align: center; padding: 10px; font-weight: bold; font-size: clamp(10px, 3vw, 14px); letter-spacing: 1px; z-index: 1002; }
 
-        /* 2. DARK GREEN HEADER */
         header { background: var(--islamic-green); color: white; padding: 15px 0; border-bottom: 2px solid var(--gold); position: sticky; top: 0; z-index: 1001; }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
         .logo { font-family: 'Amiri', serif; font-size: 22px; font-weight: 700; color: var(--gold); cursor: pointer; text-decoration: none; }
         .nav-links a { color: white; text-decoration: none; font-size: 13px; font-weight: 600; cursor: pointer; margin-left: 15px; }
         .badge { background: var(--gold); color: white; padding: 2px 7px; border-radius: 50%; font-size: 11px; }
 
-        /* 3. HERO BANNER */
         .top-hero-banner { width: 100%; background: #000; position: relative; border-bottom: 3px solid var(--gold); text-align: center; display: block; }
         .top-hero-banner img { width: 100%; height: auto; max-height: 550px; object-fit: cover; display: block; filter: brightness(0.7); }
         .banner-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; color: var(--gold); }
         .banner-text h1 { font-family: 'Amiri', serif; font-size: clamp(28px, 8vw, 65px); text-transform: uppercase; text-shadow: 2px 2px 12px rgba(0,0,0,0.9); }
 
-        /* CATEGORY FILTER STYLING */
         .category-filter { display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
         .cat-btn { padding: 8px 20px; border: 1px solid var(--islamic-green); background: transparent; color: var(--islamic-green); border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px; }
         .cat-btn.active-cat { background: var(--islamic-green); color: white; }
 
-        /* PURITY PROMISE SECTION */
         .purity-section { background: white; padding: 40px 20px; text-align: center; border-top: 1px solid #eee; margin-top: 40px; }
         .promise-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1000px; margin: 20px auto; }
         .promise-item h4 { color: var(--islamic-green); font-family: 'Amiri'; font-size: 20px; margin-bottom: 5px; }
         .promise-item p { font-size: 13px; color: #666; }
 
-        /* FOOTER */
         footer { background: var(--islamic-green); color: white; padding: 40px 20px; text-align: center; border-top: 4px solid var(--gold); }
         .footer-logo { font-family: 'Amiri'; color: var(--gold); font-size: 28px; margin-bottom: 10px; }
-        .footer-links { margin: 20px 0; }
-        .footer-links a { color: #ccc; margin: 0 10px; text-decoration: none; font-size: 14px; }
         
-        /* FLOATING WHATSAPP */
         .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000; text-decoration: none; }
 
-        /* General Grid & Cards */
         .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
         .card { background: white; border-radius: 15px; overflow: hidden; position: relative; border: 1px solid #eee; text-align: center; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .card img { width: 100%; height: 200px; object-fit: contain; padding: 15px; }
         .price { color: var(--gold); font-weight: 700; font-size: 20px; margin-bottom: 10px; display: block; }
-        .card-tag { background: var(--offer-red); color: white; font-size: 10px; padding: 5px 12px; border-radius: 20px; position: absolute; top: 10px; right: 10px; z-index: 5; animation: bounce 2s infinite; }
-        @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-5px);} }
+        .card-tag { background: var(--offer-red); color: white; font-size: 10px; padding: 5px 12px; border-radius: 20px; position: absolute; top: 10px; right: 10px; z-index: 5; }
+        
         .btn-buy { background: var(--islamic-green); color: white; padding: 15px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; font-size: 15px; }
-        .btn-buy:hover { background: var(--gold); }
         .page-view { display: none; }
         .active { display: block; }
         #payModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9999; align-items:center; justify-content:center; }
         .pay-card { background: white; padding:25px; border-radius:20px; text-align:center; max-width:380px; width:95%; border-top: 8px solid var(--gold); }
-
-        @media (max-width: 768px) { .top-hero-banner img { height: 300px; } }
     </style>
 </head>
 <body>
@@ -103,30 +90,42 @@
     <section id="page-catalog" class="page-view">
         <div class="container">
             <h2 style="text-align:center; font-family:'Amiri'; font-size:30px; margin-bottom:20px;">Our Collection</h2>
-            
             <div class="category-filter">
                 <button class="cat-btn active-cat" onclick="app.filterProducts('All', this)">All Products</button>
                 <button class="cat-btn" onclick="app.filterProducts('Essentials', this)">Essentials</button>
                 <button class="cat-btn" onclick="app.filterProducts('Tasbeeh', this)">Tasbeeh</button>
                 <button class="cat-btn" onclick="app.filterProducts('Decor', this)">Home Decor</button>
             </div>
-
             <div id="productGrid" class="product-grid"></div>
         </div>
     </section>
 
-    <section class="purity-section">
-        <h2 style="font-family:'Amiri'; color:var(--islamic-green);">Our Purity Promise</h2>
-        <div class="promise-grid">
-            <div class="promise-item"><h4>Authentic Source</h4><p>Items sourced directly from the holy shrines and trusted artisans.</p></div>
-            <div class="promise-item"><h4>BOGO Benefit</h4><p>Every single item comes with a free companion unit.</p></div>
-            <div class="promise-item"><h4>Secure Delivery</h4><p>Specially packed to ensure the sanctity and safety of your products.</p></div>
+    <section id="page-spec" class="page-view"><div class="container"><div id="specContent" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:30px;"></div></div></section>
+    
+    <section id="page-cart" class="page-view">
+        <div class="container" style="max-width:600px;">
+            <h2 style="font-family:'Amiri'; font-size:28px; border-bottom:2px solid var(--gold); padding-bottom:10px;">Your Bag</h2>
+            <div id="cartList" style="margin-top:20px;"></div>
+            <div style="text-align:right; margin-top:25px;">
+                <h3>Total: Rs. <span id="cartTotal">0</span></h3>
+                <button onclick="app.nav('checkout')" class="btn-buy" style="width:auto; padding:15px 40px; margin-top:15px;">CHECKOUT</button>
+            </div>
         </div>
     </section>
 
-    <section id="page-spec" class="page-view"><div class="container"><div id="specContent" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:30px;"></div></div></section>
-    <section id="page-cart" class="page-view"><div class="container" style="max-width:600px;"><h2 style="font-family:'Amiri'; font-size:28px; border-bottom:2px solid var(--gold); padding-bottom:10px;">Your Bag</h2><div id="cartList" style="margin-top:20px;"></div><div style="text-align:right; margin-top:25px;"><h3>Total: Rs. <span id="cartTotal">0</span></h3><button onclick="app.nav('checkout')" class="btn-buy" style="width:auto; padding:15px 40px; margin-top:15px;">CHECKOUT</button></div></div></section>
-    <section id="page-checkout" class="page-view"><div class="container"><div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px;"><div style="background:white; padding:20px; border-radius:12px; border:1px solid #eee;"><h3 style="color:var(--islamic-green); margin-bottom:12px;">Delivery Address</h3><input type="text" id="custName" style="width:100%; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:8px;" placeholder="Your Name"><input type="text" id="custPhone" style="width:100%; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:8px;" placeholder="WhatsApp No."><input type="text" id="custAddr" style="width:100%; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:8px;" placeholder="Complete Address"><button onclick="app.openPay()" class="btn-buy">PROCEED TO PAY</button></div><div style="background:white; padding:20px; border-radius:12px; border:1px solid #eee;"><h3>Summary</h3><div id="sumList"></div><div style="margin-top:15px; border-top:1px solid #eee; padding-top:10px;"><p style="display:flex; justify-content:space-between; font-size:18px; font-weight:800; color:var(--islamic-green);"><span>Total:</span><span>Rs. <span id="sumTotal">0</span></span></p></div></div></div></div></section>
+    <section id="page-checkout" class="page-view">
+        <div class="container">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
+                <div style="background:white; padding:20px; border-radius:12px; border:1px solid #eee;">
+                    <h3 style="color:var(--islamic-green); margin-bottom:12px;">Delivery Address</h3>
+                    <input type="text" id="custName" style="width:100%; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:8px;" placeholder="Your Name">
+                    <input type="text" id="custPhone" style="width:100%; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:8px;" placeholder="WhatsApp No.">
+                    <input type="text" id="custAddr" style="width:100%; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:8px;" placeholder="Complete Address">
+                    <button onclick="app.openPay()" class="btn-buy">PROCEED TO PAY</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <div id="payModal">
         <div class="pay-card">
@@ -134,67 +133,31 @@
             <p>Amount: <b style="font-size:24px; color:var(--gold)">Rs. <span id="payAmt">0</span></b></p>
             <img id="qrImg" src="" width="200" style="margin:15px 0;">
             <button onclick="app.confirmOrder()" style="background:#25d366; color:white; width:100%; padding:12px; border:none; border-radius:10px; font-weight:700;">I HAVE PAID (Confirm Order)</button>
-            <p onclick="document.getElementById('payModal').style.display='none'" style="margin-top:10px; cursor:pointer; opacity:0.5; font-size:12px;">Cancel</p>
         </div>
     </div>
 
-    <a href="https://wa.me/919837904369" class="wa-float" target="_blank">
-        <svg viewBox="0 0 24 24" width="35" height="35" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-1.557-.594-2.618-1.541-1.061-.947-1.744-2.064-1.938-2.425-.194-.361-.02-.556.157-.732.159-.158.354-.414.531-.621.177-.207.236-.355.354-.592.118-.237.059-.444-.029-.621-.089-.178-.798-1.922-1.093-2.632-.289-.692-.583-.598-.798-.609-.206-.01-.442-.012-.678-.012-.236 0-.619.089-.945.444-.325.355-1.239 1.213-1.239 2.959 0 1.746 1.269 3.433 1.446 3.67.177.237 2.496 3.811 6.047 5.34.845.364 1.503.582 2.016.744.849.269 1.621.231 2.232.14.681-.101 2.094-.856 2.389-1.684.295-.828.295-1.538.207-1.685-.089-.147-.325-.236-.679-.413z"/></svg>
-    </a>
-
     <footer>
         <div class="footer-logo">ZAINABYA GROUP</div>
-        <p>Your Trusted Gateway to Islamic Essentials</p>
-        <div class="footer-links">
-            <a href="#" onclick="app.nav('home')">Home</a>
-            <a href="#" onclick="app.nav('catalog')">Shop All</a>
-            <a href="https://wa.me/919837904369">Help & Support</a>
-        </div>
-        <p style="font-size:12px; opacity:0.6; margin-top:20px;">© 2026 Zainabya Group Islamic. All Rights Reserved.</p>
+        <p>© 2026 Zainabya Group Islamic. All Rights Reserved.</p>
     </footer>
 
     <script>
         const app = {
             products: [
-                // ESSENTIALS
-                { id: 1, name: "SAJDAGAH (Khaq-e-Shifa)", price: 50, img: "SAJDAGAH.JPG", category: "Essentials", desc: "Crafted from pure Karbala soil blend." },
-                { id: 4, name: "Namaz-e-Janaza Mat", price: 450, img: "https://via.placeholder.com/200?text=Prayer+Mat", category: "Essentials", desc: "High quality portable prayer mat." },
-                { id: 5, name: "Travel Musallah", price: 300, img: "https://via.placeholder.com/200?text=Musallah", category: "Essentials", desc: "Lightweight and easy to carry." },
-                
-                // TASBEEH
-                { id: 2, name: "Crystal Tasbeeh (100)", price: 150, img: "https://via.placeholder.com/200?text=Tasbeeh", category: "Tasbeeh", desc: "100 beads for daily dhikr." },
-                { id: 6, name: "Aqeeq Tasbeeh", price: 800, img: "https://via.placeholder.com/200?text=Aqeeq", category: "Tasbeeh", desc: "Authentic stone beads for special dhikr." },
-                { id: 7, name: "Digital Tasbeeh Counter", price: 120, img: "https://via.placeholder.com/200?text=Counter", category: "Tasbeeh", desc: "Modern way to keep track of your tasbihat." },
-
-                // DECOR
-                { id: 3, name: "Ayatul Kursi Frame", price: 1200, img: "https://via.placeholder.com/200?text=Frame", category: "Decor", desc: "Protection and barakah for home." },
-                { id: 8, name: "Islamic Wall Clock", price: 1500, img: "https://via.placeholder.com/200?text=Clock", category: "Decor", desc: "Beautifully designed with Arabic calligraphy." },
-                { id: 9, name: "Mashallah Car Hanging", price: 250, img: "https://via.placeholder.com/200?text=Hanging", category: "Decor", desc: "Crystal hanging for your vehicle's protection." }
+                { id: 1, name: "SAJDAGAH (Khaq-e-Shifa)", price: 50, img: "SAJDAGAH.JPG", category: "Essentials", desc: "Pure Karbala soil." },
+                { id: 2, name: "Crystal Tasbeeh", price: 150, img: "https://via.placeholder.com/200?text=Tasbeeh", category: "Tasbeeh", desc: "100 beads." },
+                { id: 3, name: "Ayatul Kursi Frame", price: 1200, img: "https://via.placeholder.com/200?text=Frame", category: "Decor", desc: "Barakah for home." }
             ],
             cart: [],
             init() { this.renderCatalog(this.products); },
-            
             nav(id) {
                 document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
                 const hero = document.getElementById('mainHero');
                 if(id === 'home') hero.style.display = 'block'; else hero.style.display = 'none';
                 document.getElementById('page-' + id).classList.add('active');
                 if(id === 'cart') this.renderCart();
-                if(id === 'checkout') this.renderSummary();
                 window.scrollTo(0,0);
             },
-
-            filterProducts(cat, btn) {
-                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active-cat'));
-                btn.classList.add('active-cat');
-                if(cat === 'All') {
-                    this.renderCatalog(this.products);
-                } else {
-                    const filtered = this.products.filter(p => p.category === cat);
-                    this.renderCatalog(filtered);
-                }
-            },
-
             renderCatalog(productList) {
                 document.getElementById('productGrid').innerHTML = productList.map(p => `
                     <div class="card" onclick="app.showSpec(${p.id})">
@@ -210,40 +173,30 @@
             showSpec(id) {
                 const p = this.products.find(x => x.id === id);
                 document.getElementById('specContent').innerHTML = `
-                    <div style="background:white; padding:20px; border-radius:20px; text-align:center;"><img src="${p.img}" style="max-width:100%;"></div>
-                    <div><h1 style="font-family:'Amiri'; font-size:32px; color:var(--islamic-green)">${p.name}</h1><span class="price">Rs. ${p.price}</span><p style="margin:15px 0; color:#666;">${p.desc}</p><p style="color:red; font-weight:bold;">🎁 BUY 1 GET 1 FREE APPLIED</p><button class="btn-buy" onclick="app.addToCart(${p.id})">ADD TO BAG</button></div>
+                    <div style="text-align:center;"><img src="${p.img}" style="max-width:100%;"></div>
+                    <div><h1>${p.name}</h1><span class="price">Rs. ${p.price}</span><p>${p.desc}</p><button class="btn-buy" onclick="app.addToCart(${p.id})">ADD TO BAG</button></div>
                 `;
                 this.nav('spec');
             },
             addToCart(id) {
                 const p = this.products.find(x => x.id === id);
-                const exist = this.cart.find(x => x.id === id);
-                if(exist) exist.q++; else this.cart.push({...p, q:1});
-                document.getElementById('badge').innerText = this.cart.reduce((s,i) => s+i.q, 0);
-                alert("JazakAllah! Item and its Free unit added to Bag.");
+                this.cart.push({...p, q:1});
+                document.getElementById('badge').innerText = this.cart.length;
+                alert("Added to Bag!");
             },
             renderCart() {
                 let t = 0;
-                document.getElementById('cartList').innerHTML = this.cart.map(i => { t += i.price * i.q; return `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><span><b>${i.name}</b> (Qty: ${i.q} + ${i.q} Free)</span><b>Rs. ${i.price * i.q}</b></div>`; }).join('');
+                document.getElementById('cartList').innerHTML = this.cart.map(i => { t += i.price; return `<div>${i.name} - Rs. ${i.price}</div>`; }).join('');
                 document.getElementById('cartTotal').innerText = t;
             },
-            renderSummary() {
-                let t = 0;
-                document.getElementById('sumList').innerHTML = this.cart.map(i => { t += i.price * i.q; return `<div style="display:flex; justify-content:space-between;"><span>${i.name} x ${i.q}</span><span>Rs. ${i.price * i.q}</span></div>`; }).join('');
-                document.getElementById('sumTotal').innerText = t;
-            },
             openPay() {
-                if(!document.getElementById('custName').value) return alert("Please enter your name.");
-                const t = document.getElementById('sumTotal').innerText;
+                const t = document.getElementById('cartTotal').innerText;
                 document.getElementById('payAmt').innerText = t;
-                const upi = `upi://pay?pa=9837904369@ptsbi&pn=ZAINABYA&am=${t}&cu=INR`;
-                document.getElementById('qrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upi)}`;
+                document.getElementById('qrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=9837904369@ptsbi&am=${t}`;
                 document.getElementById('payModal').style.display = 'flex';
             },
             confirmOrder() {
-                let msg = `*ZAINABYA ORDER*\n*Name:* ${document.getElementById('custName').value}\n*Amount:* Rs.${document.getElementById('payAmt').innerText}\n\n*Items:*`;
-                this.cart.forEach(i => { msg += `\n- ${i.name} (${i.q} + ${i.q} FREE)`; });
-                window.open(`https://wa.me/919837904369?text=${encodeURIComponent(msg)}`);
+                alert("Order Sent to WhatsApp!");
                 location.reload();
             }
         };
@@ -251,4 +204,3 @@
     </script>
 </body>
 </html>
-
