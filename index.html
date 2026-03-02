@@ -438,8 +438,8 @@
                             <h3 style="font-size:17px; height:45px; overflow:hidden;">${p.name}</h3>
                             <span class="price">Rs. ${p.price}</span>
                             <div id="btn-container-${p.id}">
-                                ${qty > 0 ? this.qtyHtml(p.id, qty) : `<button class="btn-buy" onclick="app.updateQty(${p.id}, 1)">ADD TO CART</button>`}
-                            </div>
+    ${this.qtyHtml(p.id, qty)} 
+</div>
                         </div>
                     </article>
                 `}).join('');
@@ -467,11 +467,9 @@
                 // Update UI without full rerender
                 const container = document.getElementById(`btn-container-${id}`);
                 const newItem = this.cart.find(c => c.id === id);
-                if (container) {
-                    container.innerHTML = newItem 
-                        ? this.qtyHtml(id, newItem.qty) 
-                        : `<button class="btn-buy" onclick="app.updateQty(${id}, 1)">ADD TO CART</button>`;
-                }
+               if (container) {
+    container.innerHTML = this.qtyHtml(id, newItem ? newItem.qty : 0);
+}
                 
                 // Update badge
                 const totalQty = this.cart.reduce((sum, item) => sum + item.qty, 0);
@@ -587,4 +585,4 @@
 
 
 
-
+s
