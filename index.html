@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
+
         :root {
             --islamic-green: #004d40;
             --gold: #d4af37;
@@ -229,6 +230,69 @@
     }
 }
     </style>
+  <style>
+.account-bg{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(135deg,#141e30,#243b55);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Glass Card */
+.login-card{
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(15px);
+    padding:40px;
+    border-radius:20px;
+    width:320px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    color:white;
+}
+
+/* Heading */
+.login-card h2{
+    margin-bottom:20px;
+    font-size:24px;
+    font-weight:600;
+}
+
+/* Buttons */
+.login-card button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:none;
+    border-radius:30px;
+    font-size:14px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+/* Google Button */
+.google-btn{
+    background:white;
+    color:#333;
+    font-weight:500;
+}
+
+.google-btn:hover{
+    transform:scale(1.05);
+}
+
+/* Logout Button */
+.logout-btn{
+    background:#ff4b2b;
+    color:white;
+}
+
+.logout-btn:hover{
+    background:#ff1e00;
+    transform:scale(1.05);
+}
+</style>
 </head>
 <body>
     <div style="background: #d4af37; color: black; text-align: center; padding: 15px; font-weight: 700; border-bottom: 2px solid #000; position: relative; z-index: 10001;">
@@ -334,24 +398,12 @@
                 <button onclick="app.openPay()" class="btn-buy" style="border-radius:50px;">CONFIRM & PAY</button>
             </div>
         </section>
-        <section id="page-account" class="page-view">
-    <div class="container" style="max-width:400px; background:white; padding:30px; border-radius:20px;">
-        <h3 style="margin-bottom:20px; color:var(--islamic-green);">My Account</h3>
-
-        <!-- Google Login Button -->
-        <button onclick="googleLogin()" class="btn-buy">
-            🔵 Login with Google
-        </button>
-
-        <!-- Logout Button -->
-        <button onclick="logout()" 
-            style="margin-top:10px; background:none; border:none; color:red; cursor:pointer;">
-            Logout
-        </button>
-
-        <!-- User Info -->
-        <p id="userInfo" style="margin-top:15px;"></p>
-    </div>
+    <section id="page-account" class="page-view account-bg">
+   <div class="login-card">
+       <h2>Welcome Back 👋</h2>
+       <button class="google-btn">Login with Google</button>
+       <button class="logout-btn">Logout</button>
+   </div>
 </section>
     </main>
 
