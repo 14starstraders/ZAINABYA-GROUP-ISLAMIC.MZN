@@ -340,19 +340,24 @@
             </span>
         </div>
         <div class="nav-links">
-   <a onclick="app.nav('home')">
-    <img src="HOME.webp" style="width:35px; height:35px;" decoding="async">
-   </a>
-   <a onclick="app.nav('catalog')">
-<img src="CATALOG.webp" style="width:35px; height:35px;" decoding="async">
-   </a>
-   <a onclick="app.nav('cart')" style="position:relative;">
-    <img src="CART.webp" style="width:35px; height:35px;" decoding="async">
+
+<a href="#" onclick="app.nav('home'); return false;">
+    <img src="HOME.webp" alt="Home" width="35" height="35">
+</a>
+
+<a href="#" onclick="app.nav('catalog'); return false;">
+    <img src="CATALOG.webp" alt="Catalog" width="35" height="35">
+</a>
+
+<a href="#" onclick="app.nav('cart'); return false;">
+    <img src="CART.webp" alt="Cart" width="35" height="35">
     <span id="badge" class="badge" style="position:absolute; top:-5px; right:-5px;">0</span>
 </a>
-   <a onclick="app.nav('account')">
-       <img src="ACCOUNT.webp" style="width:35px; height:35px;" decoding="async">
-   </a>
+
+<a href="#" onclick="app.nav('account'); return false;">
+    <img src="ACCOUNT.webp" alt="Account" width="35" height="35">
+</a>
+
 </div>
     </nav>
 </header>
@@ -374,7 +379,9 @@
        <section id="page-home" class="page-view active">
     
     <div class="container" style="text-align:center; padding: 60px 20px;">
-        <h2 style="font-family:'Amiri'; color:var(--islamic-green); font-size:40px; margin-bottom:15px;">Experience Spiritual Excellence</h2>
+       <h1 style="font-family:'Amiri'; color:var(--islamic-green); font-size:40px;">
+Experience Spiritual Excellence
+</h1>
         <p style="max-width:700px; margin: 0 auto 40px; color:#666; font-size:18px;">Quality and Purity guaranteed for your daily spiritual essentials.</p>
         <button class="btn-buy" onclick="app.nav('catalog')" style="width:auto; padding:18px 50px; border-radius:50px; font-size:18px; background:var(--gold); color:black; cursor:pointer;" aria-label="Shop our collection">
             CLICK HERE FOR SHOPPING
@@ -402,7 +409,7 @@
         </div>
     </div>
 
-</section>
+
             </div>
         </section>
 
@@ -440,11 +447,11 @@
                 <button onclick="app.openPay()" class="btn-buy" style="border-radius:50px;">CONFIRM & PAY</button>
             </div>
         </section>
-   </button>
+   
 
-<button class="logout-btn" onclick="logout()"></button>
 
-</button>
+
+
 <div id="userInfo" style="margin-top:15px; font-weight:600;"></div>
    </div>
 </section>
@@ -835,8 +842,7 @@ function closeContactPopup() {
 </style>
 
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
 
 <script>
   const firebaseConfig = {
