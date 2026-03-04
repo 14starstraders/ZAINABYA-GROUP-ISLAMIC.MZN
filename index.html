@@ -339,9 +339,10 @@
    <a onclick="app.nav('catalog')">
 <img src="CATALOG.webp" style="width:35px; height:35px;" decoding="async">
    </a>
-   <a onclick="app.nav('cart')">
-<img src="CART.webp" style="width:35px; height:35px;" decoding="async">
-   </a>
+   <a onclick="app.nav('cart')" style="position:relative;">
+    <img src="CART.webp" style="width:35px; height:35px;" decoding="async">
+    <span id="badge" class="badge" style="position:absolute; top:-5px; right:-5px;">0</span>
+</a>
    <a onclick="app.nav('account')">
        <img src="ACCOUNT.webp" style="width:35px; height:35px;" decoding="async">
    </a>
@@ -397,7 +398,7 @@
             <div class="container">
                 <h2 style="text-align:center; font-family:'Amiri'; font-size:35px; margin-bottom:10px;">Our Premium Collection</h2>
                 <div class="filter-tabs">
-                   <button class="tab-btn active" onclick="app.filter('All', event)">All Items</button>
+                 <button class="tab-btn active" onclick="app.filter('All', event)">All Items</button>
 <button class="tab-btn" onclick="app.filter('Essentials', event)">Essentials</button>
 <button class="tab-btn" onclick="app.filter('Tasbeeh', event)">Tasbeeh</button>
 <button class="tab-btn" onclick="app.filter('BOOKS', event)">Books</button>
@@ -617,13 +618,18 @@ async function biometricLogin() {
     if(id === 'cart') this.renderCart();
     window.scrollTo({top: 0, behavior: 'smooth'});
 },
-           filter(cat, event) {
+         filter(cat, event) {
+    // Sabhi buttons se active class hatana
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    if(event) event.target.classList.add('active'); s
-    const filtered = cat === 'All' ? this.products : this.products.filter(p => p.category === cat);
-    this.renderCatalog(filtered);
+    
+    // Clicked button par active class lagana
+    if(event) event.currentTarget.classList.add('active'); 
 
-            },
+    // Filter logic (Case sensitive issue solve karne ke liye toUpperCase ka use)
+    const filtered = cat === 'All' ? this.products : this.products.filter(p => p.category.toUpperCase() === cat.toUpperCase());
+    
+    this.renderCatalog(filtered);
+},
             renderCatalog(productList) {
                 document.getElementById('productGrid').innerHTML = productList.map(p => {
                     const cartItem = this.cart.find(c => c.id === p.id);
@@ -857,7 +863,6 @@ function closeContactPopup() {
 </script>
 </body>
 </html>
-
 
 
 
