@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -58,6 +59,14 @@ body { background: var(--light); color: var(--dark); overflow-x: hidden; }
 .user-menu li i { margin-right: 10px; width: 20px; text-align: center; }
 .logout-btn { color: #e11d48 !important; border-top: 1px solid #eee; margin-top: 10px; }
 
+/* --- WISHLIST ICON ON CARDS --- */
+.wishlist-heart {
+    position: absolute; top: 15px; right: 15px;
+    font-size: 18px; color: #ccc; cursor: pointer;
+    transition: 0.3s; z-index: 5;
+}
+.wishlist-heart.active { color: #e11d48; }
+
 /* --- CATEGORY POP-UP STYLE --- */
 #catPopup {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5);
@@ -101,7 +110,7 @@ header {
 .hero { height: 40vh; background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), url("https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070") center/cover; display: flex; align-items: center; justify-content: center; color: white; text-align: center; }
 
 .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; padding: 40px 50px; }
-.card { background: white; transition: var(--transition); border: 1px solid var(--accent); border-radius: 8px; overflow: hidden; text-align: center; padding-bottom: 20px; cursor: pointer; }
+.card { position: relative; background: white; transition: var(--transition); border: 1px solid var(--accent); border-radius: 8px; overflow: hidden; text-align: center; padding-bottom: 20px; cursor: pointer; }
 .card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
 
 .p-img-container { 
@@ -127,7 +136,6 @@ header {
     header { padding: 15px 20px; grid-template-columns: 1fr auto; }
     .search-box { display: none; }
     .products { padding: 15px; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .cartBox { width: 100%; }
 }
 
 .info h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; margin: 15px 0 10px; padding: 0 10px; }
@@ -197,8 +205,8 @@ header {
             <div class="user-menu" id="userMenu">
                 <h4 id="userNameDisplay">Welcome, Guest</h4>
                 <ul id="menuList">
-                    <li><i class="fa-solid fa-box"></i> My Orders</li>
-                    <li><i class="fa-solid fa-heart"></i> Wishlist</li>
+                    <li onclick="viewOrders()"><i class="fa-solid fa-box"></i> My Orders</li>
+                    <li onclick="viewWishlist()"><i class="fa-solid fa-heart"></i> Wishlist</li>
                     <li class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</li>
                 </ul>
             </div>
@@ -281,6 +289,7 @@ header {
 <script>
 let cart = {};
 let total = 0;
+let wishlist = JSON.parse(localStorage.getItem('userWishlist')) || [];
 let orderHistory = JSON.parse(localStorage.getItem('adminOrders')) || [];
 
 const pattiDesigns = [
@@ -299,63 +308,31 @@ const mainFolders = [
     {name: "Care Folder 2", img: "CATALOG.webp", type: "folder", data: pattiDesigns, cat: "care"}
 ];
 
-// --- ADVANCED SEARCH LOGIC (AMAZON STYLE) ---
 function searchProduct(e) {
     let input = e.target.value.toLowerCase();
     let suggestionsBox = document.getElementById("suggestionsBox");
-    
-    if (input.length < 1) {
-        suggestionsBox.classList.remove("active");
-        renderMainFolders(); 
-        return;
-    }
-
-    // Filter Items from all folders
+    if (input.length < 1) { suggestionsBox.classList.remove("active"); renderMainFolders(); return; }
     let allProducts = [];
     mainFolders.forEach(f => {
         allProducts.push({name: f.name, type: 'folder'});
         f.data.forEach(p => allProducts.push({name: p.name, type: 'product', data: p}));
     });
-
     let matches = allProducts.filter(item => item.name.toLowerCase().includes(input)).slice(0, 6);
-
     if (matches.length > 0) {
-        suggestionsBox.innerHTML = matches.map(m => `
-            <div class="suggestion-item" onclick="selectSearch('${m.name}')">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <span>${m.name}</span>
-            </div>
-        `).join('');
+        suggestionsBox.innerHTML = matches.map(m => `<div class="suggestion-item" onclick="selectSearch('${m.name}')"><i class="fa-solid fa-magnifying-glass"></i><span>${m.name}</span></div>`).join('');
         suggestionsBox.classList.add("active");
-    } else {
-        suggestionsBox.classList.remove("active");
-    }
-
-    // Grid Update
-    let cards = document.querySelectorAll(".card h3");
-    cards.forEach(cardTitle => {
-        let card = cardTitle.closest('.card');
-        card.style.display = cardTitle.innerText.toLowerCase().includes(input) ? "block" : "none";
-    });
+    } else { suggestionsBox.classList.remove("active"); }
 }
 
 function selectSearch(name) {
     document.getElementById("searchInput").value = name;
     document.getElementById("suggestionsBox").classList.remove("active");
-    // Trigger grid filter
     let cards = document.querySelectorAll(".card h3");
     cards.forEach(cardTitle => {
         let card = cardTitle.closest('.card');
         card.style.display = cardTitle.innerText.toLowerCase().includes(name.toLowerCase()) ? "block" : "none";
     });
 }
-
-// Close suggestions on click outside
-document.addEventListener('click', (e) => {
-    if(!document.querySelector('.search-box').contains(e.target)) {
-        document.getElementById("suggestionsBox").classList.remove("active");
-    }
-});
 
 function renderMainFolders(cat = 'all') {
     const grid = document.getElementById('productsGrid');
@@ -388,8 +365,10 @@ function renderDesigns(folderName) {
     backBtn.style.display = "block";
     window.scrollTo(0,0);
     folder.data.forEach(item => {
+        const isLiked = wishlist.find(w => w.id === item.id) ? 'active' : '';
         grid.innerHTML += `
             <div class="card">
+                <i class="fa-solid fa-heart wishlist-heart ${isLiked}" onclick="toggleWishlist(event, '${item.id}', '${item.name}', ${item.price}, '${item.img}')"></i>
                 <div class="p-img-container" onclick="openSpec('${item.name}', '${item.price}', '${item.img}', '${item.desc}')">
                     <img src="${item.img}">
                 </div>
@@ -404,6 +383,59 @@ function renderDesigns(folderName) {
                 </div>
             </div>`;
     });
+}
+
+// --- NEW WISHLIST LOGIC ---
+function toggleWishlist(e, id, name, price, img) {
+    e.stopPropagation();
+    const index = wishlist.findIndex(item => item.id === id);
+    if(index > -1) {
+        wishlist.splice(index, 1);
+        e.target.classList.remove('active');
+    } else {
+        wishlist.push({id, name, price, img});
+        e.target.classList.add('active');
+    }
+    localStorage.setItem('userWishlist', JSON.stringify(wishlist));
+}
+
+function viewWishlist() {
+    let grid = document.getElementById('productsGrid');
+    document.getElementById('heroSection').style.display = "none";
+    document.getElementById('backBtn').style.display = "block";
+    grid.innerHTML = wishist.length === 0 ? "<p style='grid-column: 1/-1; text-align:center;'>Wishlist is empty</p>" : "";
+    wishlist.forEach(item => {
+        grid.innerHTML += `<div class="card">
+            <i class="fa-solid fa-heart wishlist-heart active" onclick="toggleWishlist(event, '${item.id}')"></i>
+            <div class="p-img-container"><img src="${item.img}"></div>
+            <div class="info"><h3>${item.name}</h3><div class="price">Rs. ${item.price}</div></div>
+        </div>`;
+    });
+    document.getElementById('userMenu').classList.remove('active');
+}
+
+// --- NEW MY ORDERS LOGIC ---
+function viewOrders() {
+    let adminDiv = document.createElement('div');
+    adminDiv.id = "userOrderPanel";
+    adminDiv.style = "position:fixed; inset:0; background:white; z-index:9999; padding:20px; overflow-y:auto;";
+    let myOrders = orderHistory.filter(o => o.customerPhone === localStorage.getItem('userPhone')); // Basic filter
+    
+    adminDiv.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--gold); padding-bottom:15px; margin-bottom:20px;">
+            <h2 style="font-family:'Playfair Display';">MY ORDERS</h2>
+            <button onclick="this.parentElement.parentElement.remove()" style="padding:10px 20px; background:var(--dark); color:white; border:none; border-radius:5px; cursor:pointer;">CLOSE</button>
+        </div>
+        ${orderHistory.length === 0 ? '<p>You haven\'t placed any orders yet.</p>' : orderHistory.slice().reverse().map(order => `
+            <div style="border:1px solid #eee; padding:15px; margin-bottom:10px; border-radius:8px;">
+                <p style="font-size:12px; color:#666;">Date: ${order.orderTime}</p>
+                <p><b>Items:</b> ${order.items}</p>
+                <p><b>Total:</b> Rs. ${order.orderTotal}</p>
+                <p style="color:green; font-weight:600;">Status: Out for Delivery</p>
+            </div>
+        `).join('')}
+    `;
+    document.body.appendChild(adminDiv);
 }
 
 function filter(cat){
@@ -466,6 +498,7 @@ function showQR() {
     const phone = document.getElementById('custPhone').value;
     const address = document.getElementById('custAddress').value;
     if(!name || !phone || !address) return alert("Please fill all details!");
+    localStorage.setItem('userPhone', phone); // Store for 'My Orders' lookup
     document.getElementById('detailsForm').style.display = 'none';
     document.getElementById('qrBox').style.display = 'block';
 }
@@ -474,54 +507,55 @@ function finishOrder() {
     const name = document.getElementById('custName').value;
     const phone = document.getElementById('custPhone').value;
     const address = document.getElementById('custAddress').value;
-
     const newOrder = {
-        customerName: name,
-        customerPhone: phone,
-        customerAddress: address,
-        orderTotal: total,
-        orderTime: new Date().toLocaleString(),
+        customerName: name, customerPhone: phone, customerAddress: address,
+        orderTotal: total, orderTime: new Date().toLocaleString(),
         items: Object.values(cart).map(item => `${item.name} (x${item.qty})`).join(', ')
     };
-
     orderHistory.push(newOrder);
     localStorage.setItem('adminOrders', JSON.stringify(orderHistory));
-
     alert("Thank you " + name + "! Order details saved.");
     let message = `*New Order from 14 Star Traders*%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Total:* Rs.${total}`;
     window.open(`https://wa.me/YOUR_NUMBER?text=${message}`, '_blank');
     location.reload(); 
 }
 
+// --- AMAZON STYLE ADMIN DASHBOARD ---
 function openAdminDashboard() {
     let adminDiv = document.createElement('div');
     adminDiv.id = "adminPanel";
-    adminDiv.style = "position:fixed; inset:0; background:white; z-index:9999; padding:20px; overflow-y:auto; font-family:'Montserrat';";
+    adminDiv.style = "position:fixed; inset:0; background:#f4f6f9; z-index:9999; padding:40px; overflow-y:auto; font-family:'Montserrat';";
     
     let html = `
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid gold; padding-bottom:15px; margin-bottom:20px;">
-            <h2 style="font-family:'Playfair Display';">SALES DASHBOARD</h2>
-            <button onclick="document.getElementById('adminPanel').remove()" style="padding:10px 20px; background:var(--dark); color:white; border:none; border-radius:5px; cursor:pointer;">CLOSE</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; background:white; padding:20px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.05); margin-bottom:20px;">
+            <h2 style="font-family:'Playfair Display'; color:var(--dark);">ADMIN SALES PANEL</h2>
+            <button onclick="document.getElementById('adminPanel').remove()" style="padding:10px 20px; background:var(--dark); color:white; border:none; border-radius:5px; cursor:pointer; font-weight:600;">CLOSE</button>
         </div>
+        <div style="background:white; padding:20px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
         ${orderHistory.length === 0 ? '<p>No orders yet.</p>' : `
-            <table style="width:100%; border-collapse:collapse; min-width:600px;">
-                <tr style="background:#f8fafc; border-bottom:1px solid #ddd;">
-                    <th style="padding:12px; text-align:left;">Date</th>
-                    <th style="padding:12px; text-align:left;">Customer</th>
-                    <th style="padding:12px; text-align:left;">Items</th>
-                    <th style="padding:12px; text-align:left;">Total</th>
-                </tr>
+            <table style="width:100%; border-collapse:collapse; background:white;">
+                <thead style="background:#f8fafc; border-bottom:2px solid #eee;">
+                    <tr>
+                        <th style="padding:15px; text-align:left;">Order Date</th>
+                        <th style="padding:15px; text-align:left;">Customer Details</th>
+                        <th style="padding:15px; text-align:left;">Purchased Items</th>
+                        <th style="padding:15px; text-align:left;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
                 ${orderHistory.slice().reverse().map(order => `
-                    <tr style="border-bottom:1px solid #eee;">
-                        <td style="padding:12px; font-size:11px;">${order.orderTime}</td>
-                        <td style="padding:12px;"><b>${order.customerName}</b><br>${order.customerPhone}</td>
-                        <td style="padding:12px; font-size:12px;">${order.items}</td>
-                        <td style="padding:12px; font-weight:700;">Rs. ${order.orderTotal}</td>
+                    <tr style="border-bottom:1px solid #f1f1f1;">
+                        <td style="padding:15px; font-size:12px; color:#555;">${order.orderTime}</td>
+                        <td style="padding:15px;"><b>${order.customerName}</b><br><span style="color:#007bff;">${order.customerPhone}</span></td>
+                        <td style="padding:15px; font-size:13px; max-width:300px;">${order.items}</td>
+                        <td style="padding:15px; font-weight:700; color:var(--dark);">Rs. ${order.orderTotal}</td>
                     </tr>
                 `).join('')}
+                </tbody>
             </table>
         `}
-        <button onclick="if(confirm('Clear history?')){localStorage.removeItem('adminOrders'); location.reload();}" style="margin-top:20px; background:#eee; padding:5px 10px; border:none; cursor:pointer;">Clear History</button>
+        </div>
+        <button onclick="if(confirm('Clear all orders?')){localStorage.removeItem('adminOrders'); location.reload();}" style="margin-top:20px; color:#999; background:none; border:none; cursor:pointer; font-size:12px;">Reset All Data</button>
     `;
     adminDiv.innerHTML = html;
     document.body.appendChild(adminDiv);
@@ -601,7 +635,7 @@ onAuthStateChanged(auth, (user) => {
 window.addEventListener('click', function(e) {
     const menu = document.getElementById('userMenu');
     const wrapper = document.querySelector('.account-wrapper');
-    if (menu.classList.contains('active') && !wrapper.contains(e.target)) {
+    if (menu && menu.classList.contains('active') && !wrapper.contains(e.target)) {
         menu.classList.remove('active');
     }
 });
