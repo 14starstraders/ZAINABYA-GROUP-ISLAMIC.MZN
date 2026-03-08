@@ -1,3 +1,4 @@
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -69,7 +70,6 @@ header {
 .card { background: white; transition: var(--transition); border: 1px solid var(--accent); border-radius: 8px; overflow: hidden; text-align: center; padding-bottom: 20px; cursor: pointer; }
 .card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
 
-/* --- CATEGORY/PRODUCT IMAGE BOX FIX --- */
 .p-img-container { 
     width: 100%; 
     height: 250px; 
@@ -89,9 +89,7 @@ header {
 }
 
 @media (max-width: 768px) {
-    .p-img-container {
-        height: 180px; 
-    }
+    .p-img-container { height: 180px; }
 }
 
 .info h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; margin: 15px 0 10px; padding: 0 10px; }
@@ -121,12 +119,18 @@ header {
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
 .overlay.active { display: block; }
 
-/* New Cart Item Styles */
 .cart-item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #f1f5f9; }
 .cart-item-img { width: 70px; height: 70px; object-fit: contain; border: 1px solid #eee; border-radius: 5px; }
 .cart-item-info { flex: 1; }
 .cart-item-qty { display: flex; align-items: center; gap: 10px; background: #f8fafc; padding: 5px 10px; border-radius: 5px; border: 1px solid #eee; width: fit-content; margin-top: 5px; }
 .cart-item-qty button { border: none; background: none; cursor: pointer; font-weight: 700; color: #666; }
+
+/* --- NEW CHECKOUT STYLE --- */
+.checkout-page { position: fixed; inset: 0; background: white; z-index: 4000; display: none; padding: 20px; overflow-y: auto; }
+.checkout-page.active { display: block; }
+.checkout-container { max-width: 500px; margin: 0 auto; }
+.form-input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid var(--accent); border-radius: 5px; font-size: 14px; }
+.qr-box { display: none; text-align: center; border: 2px dashed var(--gold); padding: 20px; border-radius: 10px; margin-top: 20px; }
 
 @media (max-width: 768px) {
     header { padding: 15px 20px; grid-template-columns: 1fr auto; }
@@ -139,7 +143,7 @@ header {
 
 <body>
 <div id="catPopup">Category</div>
-<div class="top-bar">Welcome to 14 Star Traders | Quality Products at Best Prices</div>
+<div class="top-bar">WELCOME TO ZAINABYA GROUP ISLAMIC | QUALITY PRODUCTS AT BEST PRICES</div>
 <div class="overlay" id="overlay" onclick="toggleCart()"></div>
 
 <header>
@@ -153,6 +157,9 @@ header {
             <i class="fa-solid fa-cart-shopping"></i>
             <span id="cartCount">0</span>
         </div>
+       <div class="account" onclick="openAccount()" style="cursor:pointer;">
+<img src="account.png" style="width:24px;">
+</div>
     </div>
 </header>
 
@@ -160,6 +167,9 @@ header {
     <button onclick="filter('all')">All</button>
     <button onclick="filter('essential')">ESSENTIALS</button>
     <button onclick="filter('care')">Personal Care</button>
+    <button onclick="filter('watch')">Watches</button>
+    <button onclick="filter('gift')">Gift Items</button>
+    <button onclick="filter('decor')">Islamic Decor</button>
 </div>
 
 <section class="hero" id="heroSection">
@@ -196,7 +206,33 @@ header {
         <span>Total Amount:</span>
         <span>Rs. <span id="totalPrice">0</span></span>
     </div>
-    <button style="width:100%; margin-top:30px; background:var(--gold); color:var(--dark); padding:18px; border:none; cursor:pointer; font-weight:700;">CHECKOUT NOW</button>
+    <button onclick="openCheckout()" style="width:100%; margin-top:30px; background:var(--gold); color:var(--dark); padding:18px; border:none; cursor:pointer; font-weight:700;">CHECKOUT NOW</button>
+</div>
+
+<div class="checkout-page" id="checkoutPage">
+    <div class="checkout-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <h2 style="font-family:'Playfair Display';">Order Details</h2>
+            <i class="fa-solid fa-xmark" onclick="closeCheckout()" style="cursor:pointer; font-size:24px;"></i>
+        </div>
+        
+        <div id="detailsForm">
+            <input type="text" id="custName" class="form-input" placeholder="Enter Full Name">
+            <input type="number" id="custPhone" class="form-input" placeholder="WhatsApp Number">
+            <textarea id="custAddress" class="form-input" rows="4" placeholder="Full Delivery Address"></textarea>
+            <div style="background:#f8fafc; padding:15px; border-radius:5px; margin-bottom:20px; font-weight:700;">
+                Total Amount: Rs. <span id="checkoutTotal">0</span>
+            </div>
+            <button onclick="showQR()" style="width:100%; background:var(--dark); color:white; padding:18px; border:none; border-radius:5px; cursor:pointer; font-weight:700;">CONFIRM & PAY</button>
+        </div>
+
+        <div id="qrBox" class="qr-box">
+            <h3>Scan & Pay</h3>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=YourUPILinkHere" style="width:200px; margin:20px 0;">
+            <p style="font-size:12px; color:#666; margin-bottom:20px;">After payment, click below to send screenshot on WhatsApp.</p>
+            <button onclick="finishOrder()" style="width:100%; background:var(--gold); color:var(--dark); padding:15px; border:none; border-radius:5px; cursor:pointer; font-weight:700;">DONE / ORDER ON WHATSAPP</button>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -205,25 +241,18 @@ let total = 0;
 
 const pattiDesigns = [
     {id: 'p1', name: "Patti Design 1", price: 200, img: "SAJDAGAH.webp", desc: "Premium Patti Style 1", cat: "essential"},
-    {id: 'p2', name: "Patti Design 2", price: 250, img: "FLAG.webp", desc: "Premium Patti Style 2", cat: "essential"},
     {id: 'p2', name: "Patti Design 2", price: 250, img: "FLAG.webp", desc: "Premium Patti Style 2", cat: "essential"}
 ];
 
 const mainFolders = [
     {name: "SAJDAGAH", img: "SAJDAGAH.webp", type: "", data: pattiDesigns, cat: "essential"},
-    {name: "Flag Collection", img: "FLAG.webp", type: "folder", data: pattiDesigns, cat: "essential"},
+    {name: "Flag Collection", img: "FLAG.webp", type: "folder", data: pattiDesigns, cat: "watch"},
     {name: "Tasbeeh Collection", img: "TAZBEEH.jpg", type: "folder", data: pattiDesigns, cat: "essential"},
     {name: "Clock Collection", img: "CATALOG.webp", type: "folder", data: pattiDesigns, cat: "essential"},
     {name: "Essentials 1", img: "SAJDAGAH.webp", type: "folder", data: pattiDesigns, cat: "essential"},
     {name: "Essentials 2", img: "FLAG.webp", type: "folder", data: pattiDesigns, cat: "essential"},
     {name: "Care Folder 1", img: "TAZBEEH.jpg", type: "folder", data: pattiDesigns, cat: "care"},
-    {name: "Care Folder 2", img: "CATALOG.webp", type: "folder", data: pattiDesigns, cat: "care"},
-    {name: "Extra Folder 1", img: "SAJDAGAH.webp", type: "folder", data: pattiDesigns, cat: "essential"},
-    {name: "Extra Folder 2", img: "FLAG.webp", type: "folder", data: pattiDesigns, cat: "essential"},
-    {name: "Decor Folder 1", img: "TAZBEEH.jpg", type: "folder", data: pattiDesigns, cat: "care"},
-    {name: "Decor Folder 2", img: "CATALOG.webp", type: "folder", data: pattiDesigns, cat: "care"},
-    {name: "Gift Folder 1", img: "SAJDAGAH.webp", type: "folder", data: pattiDesigns, cat: "essential"},
-    {name: "Gift Folder 2", img: "FLAG.webp", type: "folder", data: pattiDesigns, cat: "essential"}
+    {name: "Care Folder 2", img: "CATALOG.webp", type: "folder", data: pattiDesigns, cat: "care"}
 ];
 
 function renderMainFolders(cat = 'all') {
@@ -316,6 +345,36 @@ function renderCart() {
     document.getElementById("cartItems").innerHTML = html || "<p style='text-align:center; color:#999;'>Your bag is empty</p>";
     document.getElementById("totalPrice").innerText = total;
     document.getElementById("cartCount").innerText = count;
+}
+
+// CHECKOUT FUNCTIONS
+function openCheckout() {
+    if(total <= 0) return alert("Your cart is empty!");
+    document.getElementById('checkoutTotal').innerText = total;
+    document.getElementById('checkoutPage').classList.add('active');
+}
+
+function closeCheckout() {
+    document.getElementById('checkoutPage').classList.remove('active');
+    document.getElementById('detailsForm').style.display = 'block';
+    document.getElementById('qrBox').style.display = 'none';
+}
+
+function showQR() {
+    const name = document.getElementById('custName').value;
+    const phone = document.getElementById('custPhone').value;
+    const address = document.getElementById('custAddress').value;
+
+    if(!name || !phone || !address) return alert("Please fill all details!");
+
+    document.getElementById('detailsForm').style.display = 'none';
+    document.getElementById('qrBox').style.display = 'block';
+}
+
+function finishOrder() {
+    const name = document.getElementById('custName').value;
+    alert("Thank you " + name + "! Redirecting to WhatsApp...");
+    location.reload(); 
 }
 
 function openSpec(name, price, img, desc) {
